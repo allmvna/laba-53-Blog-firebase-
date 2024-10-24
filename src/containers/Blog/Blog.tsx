@@ -14,6 +14,7 @@ const Blog = () => {
             </header>
             <Container maxWidth="lg">
                 <Routes>
+                    <Route path="/" element={<Home/>}/>
                     <Route path="/posts" element={<Home/>}/>
                     <Route path="/new-post" element={<Add/>}/>
                     <Route path="/about" element={<About/>}/>

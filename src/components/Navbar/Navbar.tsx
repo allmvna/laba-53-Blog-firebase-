@@ -8,7 +8,7 @@ const Navbar = () => {
                 <AppBar position="static">
                     <Toolbar>
                         <Container sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography to='/posts' color="inherit" variant="h6" component={NavLink} sx={{ flexGrow: 1, textDecoration: "none" }}>
+                            <Typography to='/' color="inherit" variant="h6" component={NavLink} sx={{ flexGrow: 1, textDecoration: "none" }}>
                                 My Blog
                             </Typography>
                             <Box>
