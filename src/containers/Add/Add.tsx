@@ -1,9 +1,10 @@
 import React from 'react';
+import PostForm from "../../components/PostForm/PostForm.tsx";
 
 const Add = () => {
     return (
         <div>
-            Add
+            <PostForm/>
         </div>
     );
 };

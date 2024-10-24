@@ -9,7 +9,7 @@ const Navbar = () => {
                     <Toolbar>
                         <Container sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                             <Typography to='/posts' color="inherit" variant="h6" component={NavLink} sx={{ flexGrow: 1, textDecoration: "none" }}>
-                                Blog
+                                My Blog
                             </Typography>
                             <Box>
                                 <Button to='/posts' color="inherit" component={NavLink}>Home</Button>
