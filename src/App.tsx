@@ -1,7 +1,12 @@
 import "./App.css";
+import Blog from "./containers/Blog/Blog.tsx";
 
-function App() {
-  return <></>;
-}
+const App = () => {
+  return (
+      <>
+          <Blog/>
+      </>
+  )
+};
 
 export default App;
