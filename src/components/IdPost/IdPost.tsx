@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {IPostAPI} from "../../types";
 import axiosAPI from "../../axiosAPI.ts";
-import {Card, CardContent, Typography} from "@mui/material";
+import {Alert, Card, CardContent, Typography} from "@mui/material";
 
 const IdPost = () => {
     const [post, setPost] = useState<IPostAPI | null>(null);
@@ -25,18 +25,20 @@ const IdPost = () => {
 
     return (
         <>
+            <Typography variant = 'h4' sx={{mb: 4}}>Post</Typography>
             {post ? (
                 <Card sx={{ minWidth: 275 }}>
                     <CardContent>
-                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                            {post.date}
+                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 16 }}>
+                           Created on:  {post.date}
                         </Typography>
-                        <Typography sx={{fontSize: 18 }}>{post.title}</Typography>
-                        <Typography sx={{fontSize: 15 }}>{post.description}</Typography>
+                        <hr/>
+                        <Typography sx={{fontSize: 18 }}>Title: {post.title}</Typography>
+                        <Typography sx={{fontSize: 18 }}>Description: {post.description}</Typography>
                     </CardContent>
                 </Card>
             ) : (
-                <Typography>Загрузка данных или пост не найден...</Typography>
+                <Alert severity="warning">There are no posts yet! Go to the "Add" page to add a new post</Alert>
             )}
         </>
     );
