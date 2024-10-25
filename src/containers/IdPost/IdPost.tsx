@@ -5,18 +5,27 @@ import axiosAPI from "../../axiosAPI.ts";
 import {Alert, Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import Loader from "../../UI/Loader/Loader.tsx";
 
 
 const IdPost = () => {
     const [post, setPost] = useState<IPostAPI | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
     const params = useParams<{ IdPost: string }>();
     const navigate = useNavigate();
 
-    const fetchOnePost = useCallback(async (id: string) => {
-        const response: {data: IPostAPI} = await axiosAPI<IPostAPI>(`posts/${id}.json`);
 
-        if(response.data){
-            setPost(response.data);
+    const fetchOnePost = useCallback(async (id: string) => {
+        setLoading(true);
+        try {
+            const response: { data: IPostAPI } = await axiosAPI<IPostAPI>(`posts/${id}.json`);
+            if (response.data) {
+                setPost(response.data);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -35,18 +44,20 @@ const IdPost = () => {
 
     return (
         <>
-            <Typography variant = 'h4' sx={{mb: 4}}>Post</Typography>
-            {post ? (
+            <Typography variant='h4' sx={{ mb: 4 }}>Post</Typography>
+            {loading ? (
+                <Loader />
+            ) : post ? (
                 <Card sx={{ minWidth: 275 }}>
                     <CardContent>
                         <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 16 }}>
-                           Created on:  {post.date}
+                            Created on: {post.date}
                         </Typography>
-                        <hr/>
-                        <Typography sx={{fontSize: 18 }}>Title: {post.title}</Typography>
-                        <Typography sx={{fontSize: 16 }}>Description: {post.description}</Typography>
+                        <hr />
+                        <Typography sx={{ fontSize: 18 }}>Title: {post.title}</Typography>
+                        <Typography sx={{ fontSize: 16 }}>Description: {post.description}</Typography>
                         <CardActions sx={{ justifyContent: 'flex-end' }}>
-                            <Button component={NavLink} to={`/posts/${params.IdPost}/edit`} variant="contained" color="success" size="small" startIcon={<FormatListBulletedIcon/>}>
+                            <Button component={NavLink} to={`/posts/${params.IdPost}/edit`} variant="contained" color="success" size="small" startIcon={<FormatListBulletedIcon />}>
                                 Edit
                             </Button>
                             <Button variant="contained" color="error" size="small" startIcon={<DeleteIcon />} onClick={deletePost}>

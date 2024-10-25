@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid2';
 import {IPostAPI, IPostForm} from "../../types";
 import axiosAPI from "../../axiosAPI.ts";
 import {useNavigate, useParams} from "react-router-dom";
+import Loader from "../../UI/Loader/Loader.tsx";
 
 const initialState = {
     title: "",
@@ -12,16 +13,24 @@ const initialState = {
 
 const PostForm = () => {
     const [form, setForm] = useState<IPostForm>(initialState);
+    const [loading, setLoading] = useState<boolean>(false);
     const params = useParams<{ IdPost?: string }>();
     const navigate = useNavigate();
 
     const fetchPost = useCallback(async (id: string) => {
-        const response = await axiosAPI.get<IPostAPI>(`posts/${id}.json`);
-        if (response.data) {
-            setForm({
-                title: response.data.title,
-                description: response.data.description,
-            });
+        setLoading(true);
+        try {
+            const response = await axiosAPI.get<IPostAPI>(`posts/${id}.json`);
+            if (response.data) {
+                setForm({
+                    title: response.data.title,
+                    description: response.data.description,
+                });
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -33,21 +42,27 @@ const PostForm = () => {
         }));
     };
 
-
     const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
 
         const postData = {
             ...form,
             date: `${new Date().toLocaleDateString()} ${ new Date().toLocaleTimeString()}`,
         };
 
-        if (params.IdPost) {
-            await axiosAPI.put(`posts/${params.IdPost}.json`, postData);
-            navigate(`/posts/${params.IdPost}`);
-        } else {
-            await axiosAPI.post('posts.json', postData);
-            navigate('/');
+        try{
+            if (params.IdPost) {
+                await axiosAPI.put(`posts/${params.IdPost}.json`, postData);
+                navigate(`/posts/${params.IdPost}`);
+            } else {
+                await axiosAPI.post('posts.json', postData);
+                setForm(initialState);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -64,39 +79,43 @@ const PostForm = () => {
             <Typography sx={{ textAlign: 'center' }} variant='h4'>
                 {params.IdPost ? 'Edit Post' : 'Add New Post'}
             </Typography>
-                    <form onSubmit={onSubmitForm} className='mt-3'>
-                        <Grid container spacing={2} sx={{mx: 'auto', width: '50%'}}>
-                            <Grid size={12}>
-                                <TextField
-                                    sx={{ width: '100%'}}
-                                    id="outlined-basic"
-                                    label="Title"
-                                    variant="outlined"
-                                    name="title"
-                                    value={form.title}
-                                    onChange={onChangeField}
-                                    required
-                                />
-                            </Grid>
-                            <Grid size={12}>
-                                <TextField
-                                    sx={{ width: '100%'}}
-                                    id="outlined-basic"
-                                    label="Enter description"
-                                    variant="outlined"
-                                    name="description"
-                                    value={form.description}
-                                    onChange={onChangeField}
-                                    required
-                                />
-                            </Grid>
-                            <Grid size={12}>
-                                <Button sx={{ width: '100%'}} type='submit' variant="contained">
-                                    {params.IdPost ? 'Save' : 'Add'}
-                                </Button>
-                            </Grid>
+            {loading ? (
+                    <Loader/>)
+                : (
+                <form onSubmit={onSubmitForm} className='mt-3'>
+                    <Grid container spacing={2} sx={{mx: 'auto', width: '50%'}}>
+                        <Grid size={12}>
+                            <TextField
+                                sx={{width: '100%'}}
+                                id="outlined-basic"
+                                label="Title"
+                                variant="outlined"
+                                name="title"
+                                value={form.title}
+                                onChange={onChangeField}
+                                required
+                            />
                         </Grid>
-                    </form>
+                        <Grid size={12}>
+                            <TextField
+                                sx={{width: '100%'}}
+                                id="outlined-basic"
+                                label="Enter description"
+                                variant="outlined"
+                                name="description"
+                                value={form.description}
+                                onChange={onChangeField}
+                                required
+                            />
+                        </Grid>
+                        <Grid size={12}>
+                            <Button sx={{width: '100%'}} type='submit' variant="contained">
+                                {params.IdPost ? 'Save' : 'Add'}
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+                )}
         </>
     );
 };
