@@ -43,23 +43,26 @@ const Home = () => {
     }
     return (
         <>
-            <Typography variant='h4' sx={{ mb: 4 }}>Posts</Typography>
+            <Typography variant='h4' sx={{ mb: 2, textAlign: 'center', color: '#000' }}>Posts</Typography>
             {posts.length === 0 ? (
                 <Alert severity="info">There are no posts yet! Go to the "Add" page to add a new post</Alert>
             ) : (
                 <Grid container spacing={2}>
                     {posts.map(post => (
                         <Grid size={12} key={post.id}>
-                            <Card sx={{ minWidth: 275 }}>
+                            <Card sx={{ minWidth: 275, backgroundColor: 'inherit',  border: '3px solid', borderRadius: '10px', p: 1 }}>
                                 <CardContent>
-                                    <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                                        Data: {post.date}
+                                    <Typography gutterBottom sx={{fontSize: 16, textDecoration: 'underline' }}>
+                                        {post.date}
                                     </Typography>
-                                    <Typography sx={{ fontSize: 18 }}>{post.title}</Typography>
-                                    <Typography sx={{ fontSize: 15 }}>{post.description}</Typography>
                                 </CardContent>
-                                <CardActions>
-                                    <Button component={NavLink} to={`/posts/${post.id}`} variant="contained" size="small">Read more</Button>
+                                <CardContent sx={{backgroundColor: 'white', border: '1px solid  #9e9e9e', borderRadius: '10px', mb: 1 }}>
+                                    <Typography sx={{ fontSize: 20, fontWeight: 600}}>{post.title}</Typography>
+                                    <hr/>
+                                    <Typography sx={{ fontSize: 16}}>{post.description}</Typography>
+                                </CardContent>
+                                <CardActions sx={{ justifyContent: 'center' }}>
+                                    <Button component={NavLink} to={`/posts/${post.id}`} variant="contained" size="medium">Read more...</Button>
                                 </CardActions>
                             </Card>
                         </Grid>

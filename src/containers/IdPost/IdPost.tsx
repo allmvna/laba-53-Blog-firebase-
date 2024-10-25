@@ -44,23 +44,25 @@ const IdPost = () => {
 
     return (
         <>
-            <Typography variant='h4' sx={{ mb: 4 }}>Post</Typography>
+            <Typography variant='h4' sx={{  mb: 2, textAlign: 'center', color: '#000'}}>Post</Typography>
             {loading ? (
                 <Loader />
             ) : post ? (
-                <Card sx={{ minWidth: 275 }}>
+                <Card sx={{ minWidth: 275, border: '1px solid #111c2e', borderRadius: '10px', p: 1 }}>
                     <CardContent>
-                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 16 }}>
+                        <Typography gutterBottom sx={{textAlign: 'center', color: 'text.secondary', fontSize: 18 }}>
                             Created on: {post.date}
                         </Typography>
-                        <hr />
-                        <Typography sx={{ fontSize: 18 }}>Title: {post.title}</Typography>
-                        <Typography sx={{ fontSize: 16 }}>Description: {post.description}</Typography>
+                        <CardContent sx={{border: '1px solid  #9e9e9e', borderRadius: '10px', mb: 1 }}>
+                            <Typography sx={{ fontSize: 18 , fontWeight: 600}}>Title: {post.title}</Typography>
+                            <hr/>
+                            <Typography sx={{ fontSize: 16 }}>Description: {post.description}</Typography>
+                        </CardContent>
                         <CardActions sx={{ justifyContent: 'flex-end' }}>
-                            <Button component={NavLink} to={`/posts/${params.IdPost}/edit`} variant="contained" color="success" size="small" startIcon={<FormatListBulletedIcon />}>
+                            <Button component={NavLink} to={`/posts/${params.IdPost}/edit`} variant="contained" size="medium" startIcon={<FormatListBulletedIcon />}>
                                 Edit
                             </Button>
-                            <Button variant="contained" color="error" size="small" startIcon={<DeleteIcon />} onClick={deletePost}>
+                            <Button variant="contained" color="error" size="medium" startIcon={<DeleteIcon />} onClick={deletePost}>
                                 Delete
                             </Button>
                         </CardActions>

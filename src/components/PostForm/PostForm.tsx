@@ -76,17 +76,17 @@ const PostForm = () => {
 
     return (
         <>
-            <Typography sx={{ textAlign: 'center' }} variant='h4'>
+            <Typography sx={{ mb: 2, textAlign: 'center', color: '#000' }} variant='h4'>
                 {params.IdPost ? 'Edit Post' : 'Add New Post'}
             </Typography>
             {loading ? (
                     <Loader/>)
                 : (
-                <form onSubmit={onSubmitForm} className='mt-3'>
-                    <Grid container spacing={2} sx={{mx: 'auto', width: '50%'}}>
+                <form onSubmit={onSubmitForm}>
+                    <Grid container spacing={2} sx={{mx: 'auto', width: '60%', border: '3px solid #000', borderRadius: '10px', p: 4}}>
                         <Grid size={12}>
                             <TextField
-                                sx={{width: '100%'}}
+                                sx={{width: '100%', backgroundColor: 'white', borderRadius: '10px'}}
                                 id="outlined-basic"
                                 label="Title"
                                 variant="outlined"
@@ -98,7 +98,7 @@ const PostForm = () => {
                         </Grid>
                         <Grid size={12}>
                             <TextField
-                                sx={{width: '100%'}}
+                                sx={{width: '100%', backgroundColor: 'white', borderRadius: '10px'}}
                                 id="outlined-basic"
                                 label="Enter description"
                                 variant="outlined"
@@ -108,8 +108,8 @@ const PostForm = () => {
                                 required
                             />
                         </Grid>
-                        <Grid size={12}>
-                            <Button sx={{width: '100%'}} type='submit' variant="contained">
+                        <Grid size={12} sx={{textAlign: 'center'}}>
+                            <Button size='large' type='submit' variant="contained">
                                 {params.IdPost ? 'Save' : 'Add'}
                             </Button>
                         </Grid>

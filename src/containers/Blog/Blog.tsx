@@ -14,7 +14,7 @@ const Blog = () => {
             <header>
                 <Navbar/>
             </header>
-            <Container maxWidth="lg">
+            <Container maxWidth="lg"  sx={{color: 'white'}}>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/posts" element={<Home/>}/>
