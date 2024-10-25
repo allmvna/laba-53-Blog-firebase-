@@ -3,6 +3,7 @@ import {IPost, IPostAPI} from "../../types";
 import axiosAPI from "../../axiosAPI.ts";
 import {Alert, Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import {NavLink} from "react-router-dom";
 
 const Home = () => {
     const [posts, setPosts] = useState<IPost[]>([]);
@@ -44,7 +45,7 @@ const Home = () => {
                                      <Typography sx={{fontSize: 15 }}>{post.description}</Typography>
                                  </CardContent>
                                  <CardActions>
-                                     <Button variant ='contained' size="small">Read more</Button>
+                                     <Button component={NavLink} to={`/posts/${post.id}`} variant="contained" size="small">Read more</Button>
                                  </CardActions>
                              </Card>
                          </Grid>
