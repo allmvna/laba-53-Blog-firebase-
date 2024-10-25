@@ -1,12 +1,16 @@
-import {useParams} from "react-router-dom";
+import {NavLink, useParams, useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {IPostAPI} from "../../types";
 import axiosAPI from "../../axiosAPI.ts";
-import {Alert, Card, CardContent, Typography} from "@mui/material";
+import {Alert, Button, Card, CardActions, CardContent, Typography} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+
 
 const IdPost = () => {
     const [post, setPost] = useState<IPostAPI | null>(null);
     const params = useParams<{ IdPost: string }>();
+    const navigate = useNavigate();
 
     const fetchOnePost = useCallback(async (id: string) => {
         const response: {data: IPostAPI} = await axiosAPI<IPostAPI>(`posts/${id}.json`);
@@ -15,6 +19,12 @@ const IdPost = () => {
             setPost(response.data);
         }
     }, []);
+
+    const deletePost = async () => {
+        await axiosAPI.delete(`posts/${params.IdPost}.json`);
+        navigate('/');
+
+    };
 
     useEffect(() => {
         if (params.IdPost) {
@@ -34,7 +44,15 @@ const IdPost = () => {
                         </Typography>
                         <hr/>
                         <Typography sx={{fontSize: 18 }}>Title: {post.title}</Typography>
-                        <Typography sx={{fontSize: 18 }}>Description: {post.description}</Typography>
+                        <Typography sx={{fontSize: 16 }}>Description: {post.description}</Typography>
+                        <CardActions sx={{ justifyContent: 'flex-end' }}>
+                            <Button component={NavLink} to={`/posts/${params.IdPost}/edit`} variant="contained" color="success" size="small" startIcon={<FormatListBulletedIcon/>}>
+                                Edit
+                            </Button>
+                            <Button variant="contained" color="error" size="small" startIcon={<DeleteIcon />} onClick={deletePost}>
+                                Delete
+                            </Button>
+                        </CardActions>
                     </CardContent>
                 </Card>
             ) : (

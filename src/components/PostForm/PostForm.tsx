@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Button, TextField, Typography} from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import {IPostForm} from "../../types";
+import {IPostAPI, IPostForm} from "../../types";
 import axiosAPI from "../../axiosAPI.ts";
+import {useNavigate, useParams} from "react-router-dom";
 
 const initialState = {
     title: "",
@@ -11,6 +12,18 @@ const initialState = {
 
 const PostForm = () => {
     const [form, setForm] = useState<IPostForm>(initialState);
+    const params = useParams<{ IdPost?: string }>();
+    const navigate = useNavigate();
+
+    const fetchPost = useCallback(async (id: string) => {
+        const response = await axiosAPI.get<IPostAPI>(`posts/${id}.json`);
+        if (response.data) {
+            setForm({
+                title: response.data.title,
+                description: response.data.description,
+            });
+        }
+    }, []);
 
     const onChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -29,14 +42,28 @@ const PostForm = () => {
             date: `${new Date().toLocaleDateString()} ${ new Date().toLocaleTimeString()}`,
         };
 
-        await axiosAPI.post('posts.json', postData);
-
-        setForm(initialState);
+        if (params.IdPost) {
+            await axiosAPI.put(`posts/${params.IdPost}.json`, postData);
+            navigate(`/posts/${params.IdPost}`);
+        } else {
+            await axiosAPI.post('posts.json', postData);
+            navigate('/');
+        }
     };
+
+
+    useEffect(() => {
+        if (params.IdPost) {
+            void fetchPost(params.IdPost);
+        }
+    }, [params.IdPost, fetchPost]);
+
 
     return (
         <>
-            <Typography sx={{textAlign: 'center'}} variant='h4'>Add new post</Typography>
+            <Typography sx={{ textAlign: 'center' }} variant='h4'>
+                {params.IdPost ? 'Edit Post' : 'Add New Post'}
+            </Typography>
                     <form onSubmit={onSubmitForm} className='mt-3'>
                         <Grid container spacing={2} sx={{mx: 'auto', width: '50%'}}>
                             <Grid size={12}>
@@ -64,7 +91,9 @@ const PostForm = () => {
                                 />
                             </Grid>
                             <Grid size={12}>
-                                <Button sx={{ width: '100%'}} type='submit' variant="contained">Save</Button>
+                                <Button sx={{ width: '100%'}} type='submit' variant="contained">
+                                    {params.IdPost ? 'Save' : 'Add'}
+                                </Button>
                             </Grid>
                         </Grid>
                     </form>
