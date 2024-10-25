@@ -13,16 +13,15 @@ const About = () => {
                     p: 3,
                     display: 'flex',
                     flexDirection: { xs: 'column', md: 'row' },
-                    alignItems: 'center',
                     justifyContent: 'space-between'
                 }}
             >
                 <img
-                    src="https://st.depositphotos.com/1620075/3629/i/450/depositphotos_36290441-stock-photo-blog.jpg"
+                    src="https://i.pinimg.com/564x/be/50/a3/be50a302d35390fb85ba0bd65f5095d0.jpg"
                     alt="Blog illustration"
                     style={{
-                        width: '100%',
-                        maxWidth: '400px',
+                        width: '80%',
+                        maxWidth: '300px',
                         height: 'auto',
                         borderRadius: '10px',
                         marginRight: '10px',
@@ -30,13 +29,31 @@ const About = () => {
                     loading="lazy"
                 />
                 <Typography sx={{ color: '#000', textAlign: 'justify' }}>
-                    This blog application, designed to work with the API on Firebase,
-                    provides users with the ability to easily create, edit, and view posts.
-                    Users can also delete or edit a post using the appropriate buttons.
-                    When you click on "Delete", the post is deleted using a DELETE request to the API,
-                    after which it is redirected to the main page. The Edit button opens the post
-                    editing page (/posts/:id/edit), where the form
-                    fields are automatically filled in with the current post values.
+                    <Typography variant='h6' sx={{fontWeight: '600'}}>Technical Features of this Blog:</Typography>
+                    <p>This blog application, designed to work with the API on Firebase,
+                        provides users with the ability to easily create, edit and view posts.</p>
+
+                    <p>Creating and editing posts: The same form component is used for both
+                        creating and editing posts. If the post ID is missing from the URL,
+                        the application executes a POST request to create a new post. Otherwise,
+                        a GET request is made to receive the post data, which then fills out the form.</p>
+
+                    <p>Deleting posts: Deleting a post is done using a DELETE request to the API.
+                        After successful deletion, the user is automatically redirected to the main page.</p>
+
+                    <p>Preloader: To improve the user experience,
+                        the application displays a spinner when loading data, both on the pages of creating,
+                        editing, and viewing posts.</p>
+
+                    <p>About and Contacts pages: These pages can also get their data from the API. To do this,
+                        developers can create appropriate entries in the Firebase database in advance to provide
+                        users with up-to-date information.</p>
+
+                    <p>Это приложение-блог предлагает простоту и функциональность, позволяя пользователям
+                        сосредоточиться на создании контента и взаимодействии с ним.
+                        Использование Firebase в качестве бекенда обеспечивает надежное хранение данных
+                        и легкий доступ к API, а продуманная навигация и пользовательский интерфейс
+                        делают его удобным в использовании.</p>
                 </Typography>
             </Container>
         </>
